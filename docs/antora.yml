@@ -1,0 +1,6 @@
+name: selenium-testing
+title: Pruebas de Aceptación (e2e) con Selenium
+version: 0.22.0
+# prerelease: -beta.1
+nav:
+- modules/ROOT/nav.adoc
