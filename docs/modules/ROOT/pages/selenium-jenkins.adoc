@@ -125,7 +125,7 @@ Recuerda que en el código debes comentar las lineas donde se definen las proper
 .Pipeline con la fase Firefox Test
 image::jenkins-webdriver-pipeline-firefox-ok.png[role="thumb", align="center"]
 
-===== A partir de aquí es optativo
+=== A partir de aquí es optativo
 
 [start=4]
 . Para probar la ejecución con Chrome, debes instalar Chrome en la máquina Jenkins. Para ello sigue los pasos: https://ubunlog.com/google-chrome-ubuntu-1804/#Instalar_Google_Chrome_en_Ubuntu_1804_LTS_desde_la_linea_de_comandos[Instalar Google Chrome en Ubuntu 18.04 LTS desde la línea de comandos] (No instales al versión beta, tampoco podrás ejecutarlo, simplemente instalarlo). Después, crea una nueva fase donde llames a los tests con el driver de Chrome. Tendrás que modificar el driver en el código, y llamar a maven con el siguiente parámetro para Chrome Driver: 
