@@ -1,35 +1,8 @@
-////
-Codificación, idioma, tabla de contenidos, tipo de documento
-////
-:encoding: utf-8
-:lang: es
-:toc: right
-:toc-title: Tabla de contenidos
-:keywords: Selenium end-to-end testing
-:doctype: book
-:icons: font
-
-////
-/// activar btn:
-////
-:experimental:
-
-:source-highlighter: rouge
-:rouge-linenums-mode: inline
-
-// :highlightjsdir: ./highlight
-
-:figure-caption: Fig.
-:imagesdir: images
 
 ////
 Nombre y título del trabajo
 ////
 = Pruebas de aceptación con Selenium. Ejercicios Parte 1: Selenium IDE
-
-Herramientas y Métodos en Ingeniería del Software
-Version 2.0, Marzo-2021.
-Joaquín Cañadas <jjcanada@ual.es>
 
 // Entrar en modo no numerado de apartados
 :numbered!: 
@@ -74,19 +47,11 @@ Desde ahora hasta el final de la asignatura vamos a desarrollar un proyecto web 
 
 Os dejo aquí tres ejemplos de plantillas de aplicación web, en distintas tecnologías, que implementan un login y registro de usuarios. 
 
-.Proyecto Login - Opciones
+.Proyecto Autenticación de usuarios - Opciones
 ****
-. https://docs.microsoft.com/es-es/aspnet/core/tutorials/publish-to-azure-webapp-using-vs?view=aspnetcore-2.2[Creación de una app Login con Visual Studio 2017 y Azure].
- _.Net Core + SQL Server + Azure_
-
-. https://hellokoding.com/registration-and-login-example-with-spring-xml-configuration-maven-jsp-and-mysql/[Registration and Login with Spring MVC, Spring Security, Spring Data JPA, Hibernate, MySQL, JSP and Bootstrap].
- _Java + MySql + Maven_
-
 . https://sailsjs.com/get-started[Web App. Extensible project with auth, login, & password recovery].
  _Node JS + Sails JS framework_
 
- . https://github.com/heartcombo/devise/wiki/Example-applications[A list of example Rails applications that demonstrate how to use Devise, a flexible authentication solution for Rails]
- _Ruby on Rais + Devise_
 ****
 
 . Elegid una de las plantillas. Si lo deseas puedes usar alguna otra plantilla en otra tecnología, así que tomad una decisión en equipo y comentádmelo antes para validar que implemente la funcionalidad básica requerida.

@@ -1,42 +1,9 @@
-////
-Codificación, idioma, tabla de contenidos, tipo de documento
-////
-:encoding: utf-8
-:lang: es
-:toc: right
-:toc-title: Tabla de contenidos
-:keywords: Selenium end-to-end testing
-:doctype: book
-:icons: font
 
-////
-/// activar btn:
-////
-:experimental:
-
-:source-highlighter: rouge
-:rouge-linenums-mode: inline
-
-// :highlightjsdir: ./highlight
-
-:figure-caption: Fig.
-:imagesdir: images
 
 ////
 Nombre y título del trabajo
 ////
-= Pruebas de aceptación con Selenium
-
-Version 2.0, Marzo-2021.
-Joaquín Cañadas <jjcanada@ual.es>
-
-// Entrar en modo no numerado de apartados
-:numbered!: 
-
-[abstract]
-////
-COLOCA A CONTINUACIÓN EL RESUMEN
-////
+= Selenium WebDriver
 
 ////
 COLOCA A CONTINUACIÓN LOS OBJETIVOS
@@ -50,11 +17,8 @@ COLOCA A CONTINUACIÓN LOS OBJETIVOS
 La realización de estas actividades se realizará en equipo. La entrega será mediante el envío de un informe y el acceso al profesor a los servicios configurados, para la revisión y evaluación de los mismos. 
 ****
 
-// Entrar en modo numerado de apartados
-:numbered:
 
-
-== Selenium WebDriver
+== ¿Qué es WebDriver?
 
 Selenium WebDriver permite ejecutar los tests de Selenium como tests de JUnit, ofreciendo así la forma de ser ejecutados en Eclipse y Jenkins. 
 
@@ -74,7 +38,7 @@ Al exportar, marca las dos opciones que permiten que se guarde como comentarios 
 
 En el momento de escribir este documento, Selenium IDE exporta los tests en formato JUnit 4. Veamos a continuación los pasos necesarios para su ejecución.
 
-En Eclipse, crea un nuevo proyecto Java. Crea la carpeta fuente `test`. Crea un nuevo paquete en la carpeta test de nombre `org.ual.hmis.nombreEquipo` (sustituyendo `nombreEquipo` por el nombre de tu equipo). Ahí guarda los archivos `.java` exportados de Selenium IDE. 
+En Eclipse, crea un nuevo proyecto Java. Crea la carpeta fuente `test`. Crea un nuevo paquete en la carpeta test de nombre `org.ual.cnsa.nombreEquipo` (sustituyendo `nombreEquipo` por el nombre de tu equipo). Ahí guarda los archivos `.java` exportados de Selenium IDE. 
 
 Verás que aparecen muchos errores de compilación porque aun no hemos añadido las librerías necesarias de JUnit 4 y Selenium Webdriver. Para hacerlo, vamos a apoyarnos en Maven. A continuación, convierte el proyecto en un proyecto Maven: Sobre el nombre del proyecto, botón derecho, Configure > Convert to Maven project
 
@@ -123,7 +87,7 @@ A continuación, añade las siguientes 4 dependencias en un nuevo bloque con la 
 
 Una vez guardados los cambios, los errores de compilación en tu clase `.java` con los test exportados de Selenium deberían desaparecer.
 
-En caso de dudas, utiliza como referencia el repositorio https://github.com/ualhmis/seleniumWebDriverJUnit que tiene ya configurado el `pom.xml` con las dependencias necesarias. 
+En caso de dudas, utiliza como referencia el repositorio https://github.com/ualhmis/seleniumWebDriverJUnit que tiene ya configurado el `pom.xml` con las dependencias necesarias.
 
 [IMPORTANT]
 ====
@@ -159,7 +123,7 @@ Es importante que los drivers específicos de los navegadores no se guarden en e
 .. Con estos dos drivers es suficiente como prueba de concepto, pero puedes ver como descargar los drivers de otros navegadores aquí: https://www.selenium.dev/documentation/en/webdriver/driver_requirements/#quick-reference[Driver requirements].
 
 [start=3]
-. De la sección anterior, deberás tener el un paquete en la carpeta test de nombre `org.ual.hmis.nombreEquipo` (sustituyendo `nombreEquipo` por el nombre de tu equipo), y ahí estarán  archivos `.java` exportados de Selenium IDE. Si has forkeado el proyecto de referencia, elimina los paquetes que contienen tests de ejemplo.
+. De la sección anterior, deberás tener el un paquete en la carpeta test de nombre `org.ual.cnsa.nombreEquipo` (sustituyendo `nombreEquipo` por el nombre de tu equipo), y ahí estarán  archivos `.java` exportados de Selenium IDE. Si has forkeado el proyecto de referencia, elimina los paquetes que contienen tests de ejemplo.
 
 . A continuación se indican unas mínimas modificaciones que hay que realizar a cada archivo fuente `.java` exportado de Selenium IDE: 
 .. Añade el paquete a cada archivo `.java`

@@ -1,58 +1,17 @@
-////
-Codificación, idioma, tabla de contenidos, tipo de documento
-////
-:encoding: utf-8
-:lang: es
-:toc: right
-:toc-title: Tabla de contenidos
-:keywords: Selenium end-to-end testing
-:doctype: book
-:icons: font
 
-////
-/// activar btn:
-////
-:experimental:
-
-:source-highlighter: rouge
-:rouge-linenums-mode: inline
-
-// :highlightjsdir: ./highlight
-
-:figure-caption: Fig.
-:imagesdir: images
-
-////
-Nombre y título del trabajo
-////
-= Actividad 9. Pruebas de aceptación con Selenium
-
-Herramientas y Métodos en Ingeniería del Software
-Version 1.2, Abril-2021.
-Joaquín Cañadas <jjcanada@ual.es>
-
-// Entrar en modo no numerado de apartados
-:numbered!: 
-
-[abstract]
-////
-COLOCA A CONTINUACIÓN EL RESUMEN
-////
-Tests de Selenium JUnit WebDriver en Jenkins.
+= Tests de Selenium en Jenkins.
 
 ////
 COLOCA A CONTINUACIÓN LOS OBJETIVOS
 ////
 .Objetivos 
 * Ejecutar los test de Selenium JUnit Webdriver en Jenkins utilizando el navegador en modo _headless_.
+* Diseñar un pipeline con fases en paralelo para la ejecución de los test en cada navegador.
 
 .Realización y entrega
 ****
 La realización de estas actividades se realizará en equipo. La entrega será mediante el envío de un informe y el acceso al profesor a los servicios configurados, para la revisión y evaluación de los mismos. 
 ****
-
-// Entrar en modo numerado de apartados
-:numbered:
 
 
 == Selenium WebDriver y Jenkins
@@ -62,6 +21,9 @@ link:selenium-webdriver.html[Selenium WebDriver] permite ejecutar los tests de S
 La ejecución de los tests de Selenium en Jenkins debe hacerse en modo _headless_ ya que la máquina Jenkins no tiene instalada una interfaz gráfica, más comúnmente conocida como X o X11 en Linux. A pesar de ello, podremos hacerlo instalando un entorno de visualización simulado (`xvfb`). Veamos los pasos necesarios. Lo primero es descargar los drivers de los navegadores en la máquina de Jenkins. 
 
 === Configuración 
+
+// Adaptación a CNSA: 
+// En HMIS Jenkins se instala  como paquete en Ubuntu. Hay que adaptar esto a Jenkins en contenedor de CNSA.
 
 . En la carpeta JENKINS_HOME (si no recuerdas cual es, la predeterminada es `/var/lib/jenkins`, puedes verla en http://fake[http://_mi-jenkins-url_/systemInfo]) crea una carpeta `selenium-drivers` y descarga ahí los drivers de los navegadores Firefox y Chrome para Ubuntu. Para ello, ejecuta los siguientes comandos en la máquina Jenkins.
 

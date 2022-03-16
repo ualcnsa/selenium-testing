@@ -1,1 +1,9 @@
 * xref:index.adoc[]
+
+* xref:selenium-ide-intro.adoc[]
+
+* xref:selenium-ide-ejercicios.adoc[]
+
+* xref:selenium-webdriver.adoc[]
+
+* xref:selenium-jenkins.adoc[]
