@@ -2,7 +2,7 @@
 ////
 Nombre y título del trabajo
 ////
-= Pruebas de aceptación con Selenium. Ejercicios Parte 1: Selenium IDE
+= Caso práctico: Probando una aplicación funcional
 
 // Entrar en modo no numerado de apartados
 :numbered!: 
@@ -17,7 +17,9 @@ Ejercicios de tests de aceptación con Selenium.
 COLOCA A CONTINUACIÓN LOS OBJETIVOS
 ////
 .Objetivos
+====
 * Comenzar a crear tests de aceptación de aplicaciones web con Selenium IDE.
+====
 
 .Realización y entrega
 ****

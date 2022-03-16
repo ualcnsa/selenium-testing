@@ -22,10 +22,11 @@ Introducción a los tests de aceptación de aplicaciones web con Selenium.
 COLOCA A CONTINUACIÓN LOS OBJETIVOS
 ////
 .Objetivos
+====
 * Comenzar a crear tests de aceptación de aplicaciones web con Selenium IDE.
 * Crear y desplegar una plantilla de aplicación web que implemente un Login y Registro de usuario.
 * Exportar los test de Selenium IDE a Selenium Webdriver y ejecutar en Eclipse con distintos navegadores web (cross-browser testing). 
 * Ejecutar los test de Selenium en Jenkins utilizando el navegador en modo _headless_.
-
+====
 
 
