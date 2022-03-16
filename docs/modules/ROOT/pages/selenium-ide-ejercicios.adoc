@@ -2,16 +2,7 @@
 ////
 Nombre y título del trabajo
 ////
-= Caso práctico: Probando una aplicación funcional
-
-// Entrar en modo no numerado de apartados
-:numbered!: 
-
-[abstract]
-////
-COLOCA A CONTINUACIÓN EL RESUMEN
-////
-Ejercicios de tests de aceptación con Selenium.
+= Caso práctico
 
 ////
 COLOCA A CONTINUACIÓN LOS OBJETIVOS
@@ -19,6 +10,8 @@ COLOCA A CONTINUACIÓN LOS OBJETIVOS
 .Objetivos
 ====
 * Comenzar a crear tests de aceptación de aplicaciones web con Selenium IDE.
+* Probar una aplicación funcional que implemente la autenticación y registro de usuarios.
+* Diseñar los casos de prueba para los escenarios de éxito y los escenarios de error.
 ====
 
 .Realización y entrega
@@ -26,37 +19,24 @@ COLOCA A CONTINUACIÓN LOS OBJETIVOS
 La realización de estas actividades se realizará *en equipo*. La entrega será mediante el envío de un informe y el acceso al profesor a los repositorios y servicios configurados, para la revisión y evaluación de los mismos. 
 ****
 
-// Entrar en modo numerado de apartados
-:numbered:
 
+== Autenticación y registro de usuarios
 
-
-// == Ejercicios Parte 1: Selenium IDE
-
-== Test de la web del equipo
-
-Realiza con Selenium IDE los tests de la web del equipo de la sesión 04 que verifiquen que la web incorpora todos los elementos que se pedían que se incluyeran en la misma. 
-
-Como siempre, crea un repositorio (privado) en GitHub para guardar los archivos creados. Se trata de una actividad en equipo, así que aplica el método de colaboración fork + pull request. Comparte el repositorio con el profesor para que pueda tener acceso al mismo.
-
-
-== Aplicación web login y registro de usuarios
-
-Desde ahora hasta el final de la asignatura vamos a desarrollar un proyecto web sobre el que aplicar las herramientas y métodos que vamos introduciendo durante el curso. El proyecto tendrá un login y registro de usuario, así que vamos a comenzar por implementar esta funcionalidad. Tenemos dos alternativas: elegir una plantilla de proyecto que ya implemente la funcionalidad deseada, o bien hacerlo nosotros mismos.
+Para comenzar a realizar las pruebas necesitamos una aplicación web funcional. En este caso práctico vamos a probar una aplicación que implemente la autenticación y registro de usuarios, así que vamos a comenzar por implementar esta funcionalidad. Tenemos dos alternativas: elegir una plantilla de proyecto que ya implemente la funcionalidad deseada, o bien hacerlo nosotros mismos.
 
 
 === Elige una plantilla 
 
-Os dejo aquí tres ejemplos de plantillas de aplicación web, en distintas tecnologías, que implementan un login y registro de usuarios. 
+Aquí tienes una (o varias) plantilla(s) de aplicación web, en distintas tecnologías, que implementan un login y registro de usuarios. 
 
 .Proyecto Autenticación de usuarios - Opciones
 ****
-. https://sailsjs.com/get-started[Web App. Extensible project with auth, login, & password recovery].
+. https://sailsjs.com/get-started[SailsJs Web App. Extensible project with auth, login, & password recovery].
  _Node JS + Sails JS framework_
 
 ****
 
-. Elegid una de las plantillas. Si lo deseas puedes usar alguna otra plantilla en otra tecnología, así que tomad una decisión en equipo y comentádmelo antes para validar que implemente la funcionalidad básica requerida.
+. Elege una de las plantillas. Si lo deseas puedes usar alguna otra plantilla en otra tecnología, así que toma una decisión  y comentalo con el profesor antes para validar que implemente la funcionalidad básica requerida.
 
 . En local, crear el proyecto basado en la plantilla. Probar que funciona.
 
@@ -72,7 +52,7 @@ Como alternativa, si ya has desarrollado o estás desarrollando un proyecto simi
 - un registro de usuario, y 
 - una modificación del perfil del usuario logueado 
 
-puedes usarlo en lugar de alguna de las plantillas propuestas. Pero asegúrate de que tu proyecto es funcional, es decir, implementa las 3 características indicadas y estas funcionan, ya que el objetivo es  probarlas. Y además tu proyecto debe implementar los casos de error mediante los mensajes de validación oportunos. Si tu proyecto no es funcional, o no implementa esas 3 características o los casos de error, entonces mejor usa una plantilla de las propuestas. 
+puedes usarlo en lugar de alguna de alguna de las plantillas propuestas. Pero asegúrate de que tu proyecto es funcional, es decir, implementa las 3 características indicadas y estas funcionan, ya que el objetivo es probarlas. Y además tu proyecto debe implementar los casos de error mediante los mensajes de validación oportunos. Si tu proyecto no es funcional, o no implementa esas 3 características o los casos de error, entonces mejor usa una plantilla de las propuestas. 
 
 == Creación de los tests Selenium
 
@@ -89,7 +69,7 @@ Crear en Selenium los test cases necesarios para probar, tanto escenarios correc
 ****
 Guardar los test cases en una test suite (formato `.side`).
 
-Puesto que para realizar una prueba exhaustiva, cubriendo todos los posibles escenarios, el número de casos de prueba es elevado, la forma de trabajar es dividir las funcionalidades entre los miembros del equipo y así repartir el trabajo: Una persona que haga los tests de *Registro de usuario + Editar perfil*, y otra los de *login de usuario + cambio de contraseña*. Para equipos de 3 personas, una el registro, otra el login y otra la edición de perfil y cambio de contraseña.
+Puesto que para realizar una prueba exhaustiva, cubriendo todos los posibles escenarios, el número de casos de prueba es elevado, la forma de trabajar es dividir las funcionalidades entre los miembros del equipo y así repartir el trabajo: Una persona que haga los tests de *Registro de usuario + Editar perfil*, y otra los de *login de usuario + cambio de contraseña*. 
 
 === Implementación del test Registro de usuario (Caso correcto)
 ****
@@ -105,8 +85,9 @@ El paso sería del test case de Selenium IDE es:
 image::register-email-ramdon.png[role="thumb", align="center"]
 
 ****
+
 === Implementación del test de email incorrecto 
-****
+
 En aquellos formularios en los que se debe introducir una dirección de email y el campo está definido como tal en HTML5 mediante `<input type="email" ...>`, el valor introducido se valida en el navegador de manera que cuando el valor introducido no es un email válido muestra un pop-up con el texto _"Introduzca una dirección de correo."_ Este tipo de pop-ups no se pueden capturar con el menú contextual de Selenium IDE (botón derecho sobre el texto a validar), por lo que debemos usar un método alternativo.
 
 .Pop-up de validación en HTML5: email incorrecto
@@ -146,7 +127,6 @@ Otro ejemplo son los campos de fecha definidos como `<input type="date" ...>`
 .Pop-up de validación en HTML5: fecha incorrecta
 image::https://mdn.mozillademos.org/files/14913/date-picker-chrome-error-message.png[role="thumb", align="center"]
 
-****
 
 [NOTE]
 ====
@@ -156,7 +136,7 @@ Los mensajes de validación son distintos en cada navegador (https://hg.mozilla.
 [cols="^,^", valign=top, grid=none, stripes=even]
 |===
 
-| image:https://blog.mozilla.org/firefox/files/2017/12/firefox-logo-600x619.png[width=10%]  
+| image:https://www.mozilla.org/media/protocol/img/logos/firefox/browser/logo.eb1324e44442.svg[width=10%]  
 | image:https://www.google.com/chrome/static/images/chrome-logo.svg[width=11%]
 
 | image:selenium-ide-email-incorrecto-firefox.png[role="thumb"] 
@@ -202,15 +182,15 @@ De igual forma, la propiedad `navigator.language` puede ayudarnos a identificar 
 
 ****
 
-== Desplegar la aplicación en Azure
+== Desplegar la aplicación en la nube
 
-La aplicación que hemos probado localmente, debemos ponerla "en producción", es decir, desplegarla en Azure para que esté disponible por nuestros usuarios (ficticios).
+La aplicación que hemos probado localmente, debemos ponerla "en producción", es decir, desplegarla en la nuve para que esté disponible por nuestros usuarios (ficticios).
 
-Dependiendo de la plantilla elegida, el despliegue será distinto. La plantilla de .Net explica el despliegue en Azure Web app. El resto se pueden desplegar en Web app, o bien en una máquina virtual. 
+Dependiendo de la plantilla elegida, el despliegue será distinto. Puedes desplegar en un servicio de contenedores, o bien en una máquina virtual. 
 
 === Adaptar los test a la URL de despliegue
 
-Los test que hemos creado en el _entorno de desarrollo_, es decir, en nuestro equipo local, deben adaptarse para que funcionen en _entorno de producción_ es decir, deben atacar a la aplicación desplegada. 
+Los test que hemos creado en el _entorno de desarrollo_, es decir, en nuestro equipo local, deben adaptarse para que funcionen en _entorno de (pre)producción_ es decir, deben atacar a la aplicación desplegada. 
 
 Para ello simplemente tendrás que cambiar la URL base. 
 

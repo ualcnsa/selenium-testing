@@ -4,8 +4,10 @@
 COLOCA A CONTINUACIÓN LOS OBJETIVOS
 ////
 .Objetivos 
+====
 * Ejecutar los test de Selenium JUnit Webdriver en Jenkins utilizando el navegador en modo _headless_.
 * Diseñar un pipeline con fases en paralelo para la ejecución de los test en cada navegador.
+====
 
 .Realización y entrega
 ****

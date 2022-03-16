@@ -9,8 +9,10 @@ Nombre y título del trabajo
 COLOCA A CONTINUACIÓN LOS OBJETIVOS
 ////
 .Objetivos
-* Exportar los test de Selenium IDE a Selenium Webdriver y ejecutar en Eclipse con distintos navegadores web (cross-browser testing). 
+====
+* Exportar los test de Selenium IDE a Selenium Webdriver y ejecutarlos en un IDE como Eclipse, con distintos navegadores web (_cross-browser testing_). 
 * Ejecutar los test de Selenium utilizando el navegador en modo _headless_.
+====
 
 .Realización y entrega
 ****
