@@ -1,0 +1,249 @@
+////
+Codificación, idioma, tabla de contenidos, tipo de documento
+////
+:encoding: utf-8
+:lang: es
+:toc: right
+:toc-title: Tabla de contenidos
+:keywords: Selenium end-to-end testing
+:doctype: book
+:icons: font
+
+////
+/// activar btn:
+////
+:experimental:
+
+:source-highlighter: rouge
+:rouge-linenums-mode: inline
+
+// :highlightjsdir: ./highlight
+
+:figure-caption: Fig.
+:imagesdir: images
+
+////
+Nombre y título del trabajo
+////
+= Pruebas de aceptación con Selenium. Ejercicios Parte 1: Selenium IDE
+
+Herramientas y Métodos en Ingeniería del Software
+Version 2.0, Marzo-2021.
+Joaquín Cañadas <jjcanada@ual.es>
+
+// Entrar en modo no numerado de apartados
+:numbered!: 
+
+[abstract]
+////
+COLOCA A CONTINUACIÓN EL RESUMEN
+////
+Ejercicios de tests de aceptación con Selenium.
+
+////
+COLOCA A CONTINUACIÓN LOS OBJETIVOS
+////
+.Objetivos
+* Comenzar a crear tests de aceptación de aplicaciones web con Selenium IDE.
+
+.Realización y entrega
+****
+La realización de estas actividades se realizará *en equipo*. La entrega será mediante el envío de un informe y el acceso al profesor a los repositorios y servicios configurados, para la revisión y evaluación de los mismos. 
+****
+
+// Entrar en modo numerado de apartados
+:numbered:
+
+
+
+// == Ejercicios Parte 1: Selenium IDE
+
+== Test de la web del equipo
+
+Realiza con Selenium IDE los tests de la web del equipo de la sesión 04 que verifiquen que la web incorpora todos los elementos que se pedían que se incluyeran en la misma. 
+
+Como siempre, crea un repositorio (privado) en GitHub para guardar los archivos creados. Se trata de una actividad en equipo, así que aplica el método de colaboración fork + pull request. Comparte el repositorio con el profesor para que pueda tener acceso al mismo.
+
+
+== Aplicación web login y registro de usuarios
+
+Desde ahora hasta el final de la asignatura vamos a desarrollar un proyecto web sobre el que aplicar las herramientas y métodos que vamos introduciendo durante el curso. El proyecto tendrá un login y registro de usuario, así que vamos a comenzar por implementar esta funcionalidad. Tenemos dos alternativas: elegir una plantilla de proyecto que ya implemente la funcionalidad deseada, o bien hacerlo nosotros mismos.
+
+
+=== Elige una plantilla 
+
+Os dejo aquí tres ejemplos de plantillas de aplicación web, en distintas tecnologías, que implementan un login y registro de usuarios. 
+
+.Proyecto Login - Opciones
+****
+. https://docs.microsoft.com/es-es/aspnet/core/tutorials/publish-to-azure-webapp-using-vs?view=aspnetcore-2.2[Creación de una app Login con Visual Studio 2017 y Azure].
+ _.Net Core + SQL Server + Azure_
+
+. https://hellokoding.com/registration-and-login-example-with-spring-xml-configuration-maven-jsp-and-mysql/[Registration and Login with Spring MVC, Spring Security, Spring Data JPA, Hibernate, MySQL, JSP and Bootstrap].
+ _Java + MySql + Maven_
+
+. https://sailsjs.com/get-started[Web App. Extensible project with auth, login, & password recovery].
+ _Node JS + Sails JS framework_
+
+ . https://github.com/heartcombo/devise/wiki/Example-applications[A list of example Rails applications that demonstrate how to use Devise, a flexible authentication solution for Rails]
+ _Ruby on Rais + Devise_
+****
+
+. Elegid una de las plantillas. Si lo deseas puedes usar alguna otra plantilla en otra tecnología, así que tomad una decisión en equipo y comentádmelo antes para validar que implemente la funcionalidad básica requerida.
+
+. En local, crear el proyecto basado en la plantilla. Probar que funciona.
+
+[TIP]
+====
+https://hackernoon.com/your-node-js-authentication-tutorial-is-wrong-f1a3bf831a46[Algunos fallos típicos en los tutoriales de web de autenticación (login)]
+====
+
+=== Usa tu propio proyecto
+Como alternativa, si ya has desarrollado o estás desarrollando un proyecto similar en alguna tecnología que conozcas, y que implemente: 
+
+- un login de usuario,
+- un registro de usuario, y 
+- una modificación del perfil del usuario logueado 
+
+puedes usarlo en lugar de alguna de las plantillas propuestas. Pero asegúrate de que tu proyecto es funcional, es decir, implementa las 3 características indicadas y estas funcionan, ya que el objetivo es  probarlas. Y además tu proyecto debe implementar los casos de error mediante los mensajes de validación oportunos. Si tu proyecto no es funcional, o no implementa esas 3 características o los casos de error, entonces mejor usa una plantilla de las propuestas. 
+
+== Creación de los tests Selenium
+
+Crear en Selenium los test cases necesarios para probar, tanto escenarios correctos como escenarios de error, de las siguientes funcionalidades:
+****
+- Registro de usuario (Caso correcto)
+- Registro de usuario (Casos incorrectos)
+- Login de usuario (Caso correcto)
+- Login de usuario (Casos incorrectos)
+- Editar el perfil de usuario logueado (caso correcto)
+- Editar el perfil de usuario logueado (casos incorrectos)
+- Cambio de contraseña de usuario logueado (Caso correcto)
+- Cambio de contraseña de usuario logueado (Casos incorrectos)
+****
+Guardar los test cases en una test suite (formato `.side`).
+
+Puesto que para realizar una prueba exhaustiva, cubriendo todos los posibles escenarios, el número de casos de prueba es elevado, la forma de trabajar es dividir las funcionalidades entre los miembros del equipo y así repartir el trabajo: Una persona que haga los tests de *Registro de usuario + Editar perfil*, y otra los de *login de usuario + cambio de contraseña*. Para equipos de 3 personas, una el registro, otra el login y otra la edición de perfil y cambio de contraseña.
+
+=== Implementación del test Registro de usuario (Caso correcto)
+****
+Para que el test de registro de usuario lo podamos ejecutar repetidamente sin que nos de el error de "usuario ya existe", tenemos que usar un email aleatorio en cada ejecución del test. Eso se consigue definiendo una variable en Selenium, llamado al comando `execute script`, escribiendo la función de JavaScript que genere ese email aleatorio, y guardándolo en una variable que luego usaremos en en paso que escribe el valor en el campo _email_ del registro. 
+
+El paso sería del test case de Selenium IDE es: 
+
+- Command: *execute script*
+- Target: `return "ual-" + Math.floor(Math.random()*1500000)+"@ual.es"``
+- Value: `emailramdon`
+
+.Generación de un email aleatorio
+image::register-email-ramdon.png[role="thumb", align="center"]
+
+****
+=== Implementación del test de email incorrecto 
+****
+En aquellos formularios en los que se debe introducir una dirección de email y el campo está definido como tal en HTML5 mediante `<input type="email" ...>`, el valor introducido se valida en el navegador de manera que cuando el valor introducido no es un email válido muestra un pop-up con el texto _"Introduzca una dirección de correo."_ Este tipo de pop-ups no se pueden capturar con el menú contextual de Selenium IDE (botón derecho sobre el texto a validar), por lo que debemos usar un método alternativo.
+
+.Pop-up de validación en HTML5: email incorrecto
+image::selenium-ide-email-incorrecto.png[role="thumb", align="center", width=70%]
+
+Para ello, tras hacer click sobre el botón de _enviar_, debemos usar el comando `execute script` de Selenium IDE para que guarde el valor del atributo `validationMessage` del campo tipo email en una variable, y a continuación comprobamos el valor almacenado en esa variable. El resultado sería tal que así:
+
+.Comandos en Selenium IDE para validar el mensaje de email incorrecto.
+image::selenium-ide-email-incorrecto-commands.png[role="thumb", align="center"]
+
+<1> Guarda el contenido del atributo `validationMessage` del campo con id `email-address` en la variable `message`: 
+- Command: *execute script*
+- Target: `return document.getElementById("email-address").validationMessage`
+- Value: `message`. 
+<2> Muestra la variable `message` en el log de Selenium IDE.
+<3> Validación de que el valor de `message` es el esperado.
+
+El comando `execute script` permite acceder a los elementos y propiedades del https://www.w3schools.com/jsref/dom_obj_document.asp[DOM] del documento HTML, y llamar a los métodos del mismo, en concreto en el ejemplo llama a https://www.w3schools.com/jsref/met_document_getelementbyid.asp[getElementById("fieldId")]. 
+
+En caso de que el elemento no se pueda identificar por su `id`, como alternativa se usar el método  https://www.w3schools.com/jsref/met_document_getelementsbyclassname.asp[getElementsByName("fieldName")], pero ten en cuenta que `getElementsByName` devuelve una colección de objetos https://www.w3schools.com/jsref/dom_obj_htmlcollection.asp[HTMLCollection] en lugar de un único objeto, por lo que si queremos acceder al primer elemento de la colección simplemente tenemos que añadir la posición entre corchetes: `getElementsByName("fieldName")[0]`. 
+
+Otras alternativas son https://www.w3schools.com/jsref/met_document_getelementsbyclassname.asp[getElementsByClassName()], y https://www.w3schools.com/jsref/met_document_getelementsbytagname.asp[getElementsByTagName()].
+
+Esta solución también se puede aplicar a otros campos de HTML5 que también crean este tipo de _pop-ups_ para la validación, por ejemplo los campos que se establecen como requeridos, o con una longitud mínima y máxima, definidos por ejemplo así:  `<input type="password" required minlength="6" maxlength="10"/>`
+
+.Pop-up de validación en HTML5: contraseña requerida
+image::selenium-ide-contraseña-requerida.png[role="thumb", align="center", width=70%]
+
+.Comandos en Selenium IDE para validar contraseña vacía.
+image::selenium-ide-contraseña-requerida-assert.png[role="thumb", align="center"]
+
+.Pop-up de validación en HTML5: contraseña demasiado corta
+image::selenium-ide-contraseña-incorrecta.png[role="thumb", align="center", width=70%]
+
+Otro ejemplo son los campos de fecha definidos como `<input type="date" ...>`
+
+.Pop-up de validación en HTML5: fecha incorrecta
+image::https://mdn.mozillademos.org/files/14913/date-picker-chrome-error-message.png[role="thumb", align="center"]
+
+****
+
+[NOTE]
+====
+Los mensajes de validación son distintos en cada navegador (https://hg.mozilla.org/l10n-central/es-ES/file/default/dom/chrome/dom/dom.properties[Firefox], https://chromium.googlesource.com/chromium/src/\+/a0e2753f75c926313e183b912584a7f15790825d/content/app/strings/translations/content_strings_es.xtb[Chrome]), tenlo en cuenta a la hora de definir el `assert`. También hay que considerar el idioma en el que esté configurado el navegador (En Firefox,  en su https://hg.mozilla.org/l10n-central[repostorio] selecciona el idioma deseado y busca el archivo `dom/chrome/dom/dom.properties`, y en https://chromium.googlesource.com/chromium/src/+/a0e2753f75c926313e183b912584a7f15790825d/content/app/strings/translations/[Chrome] lo encontrarás en el archivo del idioma, en español https://chromium.googlesource.com/chromium/src/\+/a0e2753f75c926313e183b912584a7f15790825d/content/app/strings/translations/content_strings_es.xtb[content_strings_es.xtb]). 
+
+.Validación de email incorrecto en Firefox y Chrome
+[cols="^,^", valign=top, grid=none, stripes=even]
+|===
+
+| image:https://blog.mozilla.org/firefox/files/2017/12/firefox-logo-600x619.png[width=10%]  
+| image:https://www.google.com/chrome/static/images/chrome-logo.svg[width=11%]
+
+| image:selenium-ide-email-incorrecto-firefox.png[role="thumb"] 
+| image:selenium-ide-email-incorrecto-chrome.png[role="thumb"]
+
+|===
+
+
+====
+
+=== Control de flujo en Selenium IDE 
+****
+
+Como acabamos de ver en el punto anterior, puede ser necesario que en función del navegador que estemos usando o del idioma en que esté configurado dicho navegador, nuestro `assert` deba validar un mensaje u otro.
+
+Selenium IDE permite añadir sentencias de https://www.selenium.dev/selenium-ide/docs/en/introduction/control-flow[control de flujo] como https://www.selenium.dev/selenium-ide/docs/en/introduction/control-flow#conditional-branching[*condicionales*] y https://www.selenium.dev/selenium-ide/docs/en/introduction/control-flow#looping[*bucles*]. 
+
+El siguiente https://github.com/ualjjcanada/selenium-ide-samples[ejemplo] usa de la propiedad `navigator.userAgent` que incluye información del navegador que se está utilizando en la ejecución del test.
+
+[source]
+----
+execute script | return navigator.userAgent  |  valor_navigatoruserAgent
+if             | ${navigatoruserAgent}.includes("Firefox")
+assert         | message | Ajústese al formato solicitado: 8 character password.
+end            |
+if             | ${navigatoruserAgent}.includes("Chrome")
+assert         | message | Utiliza un formato que coincida con el solicitado
+end            |
+
+
+----
+
+.Uso de condicional para distinguir entre navegadores
+image::selenium-ide-conditional-navigators.png[role="thumb", align="center", width=100%]
+
+De igual forma, la propiedad `navigator.language` puede ayudarnos a identificar el idioma del navegador: `es_ES` para español, `en_GB` para inglés.
+
+
+
+
+
+
+
+****
+
+== Desplegar la aplicación en Azure
+
+La aplicación que hemos probado localmente, debemos ponerla "en producción", es decir, desplegarla en Azure para que esté disponible por nuestros usuarios (ficticios).
+
+Dependiendo de la plantilla elegida, el despliegue será distinto. La plantilla de .Net explica el despliegue en Azure Web app. El resto se pueden desplegar en Web app, o bien en una máquina virtual. 
+
+=== Adaptar los test a la URL de despliegue
+
+Los test que hemos creado en el _entorno de desarrollo_, es decir, en nuestro equipo local, deben adaptarse para que funcionen en _entorno de producción_ es decir, deben atacar a la aplicación desplegada. 
+
+Para ello simplemente tendrás que cambiar la URL base. 
+
