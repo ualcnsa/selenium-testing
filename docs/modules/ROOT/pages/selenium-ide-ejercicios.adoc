@@ -194,3 +194,10 @@ Los test que hemos creado en el _entorno de desarrollo_, es decir, en nuestro eq
 
 Para ello simplemente tendrás que cambiar la URL base. 
 
+[IMPORTANT]
+====
+*EJERCICIOS (Optativos)* 
+
+. Crea los tests necesarios para probar la navegación del *primer ejercicio* de la asignatura *Desarrollo de Aplicaciones Híbridas* desplegada en local y/o en la nube.
+====
+
