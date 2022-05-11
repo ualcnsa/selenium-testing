@@ -35,14 +35,12 @@ cd
 JENKINS_HOME=/var/jenkins_home <2>
 echo $JENKINS_HOME
 mkdir $JENKINS_HOME/selenium-drivers <3>
-wget https://github.com/mozilla/geckodriver/releases/download/v0.29.1/geckodriver-v0.29.1-linux64.tar.gz
-sudo tar -C $JENKINS_HOME/selenium-drivers/ -xvf geckodriver-v0.29.1-linux64.tar.gz <4>
-wget https://chromedriver.storage.googleapis.com/90.0.4430.24/chromedriver_linux64.zip <5>
-sudo apt-get install unzip -y 
-sudo unzip chromedriver_linux64.zip -d $JENKINS_HOME/selenium-drivers/ <6>
+cd /tmp
+curl -L https://github.com/mozilla/geckodriver/releases/download/v0.29.1/geckodriver-v0.29.1-linux64.tar.gz -o geckodriver-v0.29.1-linux64.tar.gz
+tar -C $JENKINS_HOME/selenium-drivers/ -xvf geckodriver-v0.29.1-linux64.tar.gz <4>
+curl -L https://chromedriver.storage.googleapis.com/90.0.4430.24/chromedriver_linux64.zip -o chromedriver_linux64.zip <5>
+unzip chromedriver_linux64.zip -d $JENKINS_HOME/selenium-drivers/ <6>
 ls -la  $JENKINS_HOME/selenium-drivers/ <7>
-sudo chown jenkins:jenkins $JENKINS_HOME/selenium-drivers/ <8>
-sudo chown jenkins:jenkins $JENKINS_HOME/selenium-drivers/*
 ----
 <1> Ejecuta una consola en tu contenedor jenkins-docker
 <2> Declara la variable de entorno `JENKINS_HOME`
@@ -51,7 +49,6 @@ sudo chown jenkins:jenkins $JENKINS_HOME/selenium-drivers/*
 <5> Con `wget` descarga `chromedriver` para linux en la carpeta home, pero antes revisa la https://www.ubuntuupdates.org/package/google_chrome/stable/main/base/google-chrome-stable[última versión estable] de Chrome para Ubuntu y usa la https://chromedriver.chromium.org/downloads[URL de descarga] de `chromedriver_linux64.zip` adecuada para la versión estable de Chrome
 <6> Con `unzip` descomprime en la carpeta deseada. Además has tenido que instalar `unzip`
 <7> Lista los archivos en la carpeta `selenium-drivers`. Comprueba que los permisos no son adecuados para que Jenkins pueda lanzar los ejecutables de los drivers. 
-<8> Asigna el grupo `jenkins:jenkins` a la carpeta y los archivos. Como resultado los archivos deben tener los permisos correctos
 
 .Permisos de los drivers
 image::jenkins-installed-selenium-drivers.png[role="thumb", align="center"]
@@ -84,7 +81,7 @@ RUN apt-get install -y docker-ce
 
 RUN usermod -a -G docker jenkins
 
-RUN apt-get -y install xvfb firefox <1>
+RUN apt-get -y install xvfb firefox-esr <1>
 
 USER jenkins
 ----
