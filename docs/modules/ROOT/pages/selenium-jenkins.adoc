@@ -19,94 +19,37 @@ La realización de estas actividades se realizará en equipo. La entrega será m
 
 link:selenium-webdriver.html[Selenium WebDriver] permite ejecutar los tests de Selenium como tests de JUnit, permitiendo así su ejecución en Eclipse y Jenkins. 
 
-La ejecución de los tests de Selenium en Jenkins debe hacerse en modo _headless_ ya que la máquina Jenkins no tiene instalada una interfaz gráfica, más comúnmente conocida como X o X11 en Linux. A pesar de ello, podremos hacerlo instalando un entorno de visualización simulado (`xvfb`). Veamos los pasos necesarios. Lo primero es descargar los drivers de los navegadores en la máquina de Jenkins. 
+La ejecución de los tests de Selenium en Jenkins debe hacerse en modo _headless_ ya que la máquina Jenkins no tiene instalada una interfaz gráfica, más comúnmente conocida como X o X11 en Linux. Utilizaremos el driver _RemoteWebDriver_ para ejecutar los tests dentro de un contenedor Docker con el navegador en modo _headless_.
 
-=== Configuración 
+=== Modificación de los tests para utilizar RemoteWebDriver
 
-// Adaptación a CNSA: 
-// En HMIS Jenkins se instala  como paquete en Ubuntu. Hay que adaptar esto a Jenkins en contenedor de CNSA.
+Para poder ejecutar los tests de Selenium en Jenkins, debemos modificar el código fuente de los tests para que utilicen el driver _RemoteWebDriver_ en lugar del driver _FirefoxDriver_ o _ChromeDriver_.
 
-. En la carpeta JENKINS_HOME (si no recuerdas cual es, la predeterminada es `/var/jenkins_home`, puedes verla en http://fake[http://_mi-jenkins-url_/systemInfo]) crea una carpeta `selenium-drivers` y descarga ahí los drivers de los navegadores Firefox y Chrome para Ubuntu. Para ello, ejecuta los siguientes comandos en la máquina Jenkins.
-
-[source,bash]
+[source,java]
 ----
-docker exec -it jenkins-docker bash <1>
-cd
-JENKINS_HOME=/var/jenkins_home <2>
-echo $JENKINS_HOME
-mkdir $JENKINS_HOME/selenium-drivers <3>
-cd /tmp
-curl -L https://github.com/mozilla/geckodriver/releases/download/v0.29.1/geckodriver-v0.29.1-linux64.tar.gz -o geckodriver-v0.29.1-linux64.tar.gz
-tar -C $JENKINS_HOME/selenium-drivers/ -xvf geckodriver-v0.29.1-linux64.tar.gz <4>
-curl -L https://chromedriver.storage.googleapis.com/90.0.4430.24/chromedriver_linux64.zip -o chromedriver_linux64.zip <5>
-unzip chromedriver_linux64.zip -d $JENKINS_HOME/selenium-drivers/ <6>
-ls -la  $JENKINS_HOME/selenium-drivers/ <7>
+  @Before
+  public void setUp() throws Exception {
+    ...
+    FirefoxOptions options = new FirefoxOptions();
+    options.setHeadless(true);
+    driver = new RemoteWebDriver(new URL("http://localhost:4444/wd/hub"), options);
+    ...
+  }
 ----
-<1> Ejecuta una consola en tu contenedor jenkins-docker
-<2> Declara la variable de entorno `JENKINS_HOME`
-<3> Crea la carpeta donde guardar los drivers de los navegadores. Asegúrate que tienes permisos suficientes. Si necesitas usar `sudo`, deberás de cambiar los permisos y grupos de los archivos al usuario `jenkins:jenkins` (ver paso 7).
-<4> Con `wget` descarga `geckodriver` para linux en la carpeta home, y con `tar -xvf` descomprime en la carpeta deseada.
-<5> Con `wget` descarga `chromedriver` para linux en la carpeta home, pero antes revisa la https://www.ubuntuupdates.org/package/google_chrome/stable/main/base/google-chrome-stable[última versión estable] de Chrome para Ubuntu y usa la https://chromedriver.chromium.org/downloads[URL de descarga] de `chromedriver_linux64.zip` adecuada para la versión estable de Chrome
-<6> Con `unzip` descomprime en la carpeta deseada. Además has tenido que instalar `unzip`
-<7> Lista los archivos en la carpeta `selenium-drivers`. Comprueba que los permisos no son adecuados para que Jenkins pueda lanzar los ejecutables de los drivers. 
 
-.Permisos de los drivers
-image::jenkins-installed-selenium-drivers.png[role="thumb", align="center"]
-
-[start=2]
-. Instala `firefox` en tu contenedor Jenkins. También deberás instalar `xvfb` que hace de http://elementalselenium.com/tips/38-headless[entorno de visualización simulado] para ejecutar los tests _headeless_ de Selenium. Recuerda que la maquina Jenkins no tiene una interfaz gráfica, así que aunque firefox se va a ejecutar en modo _headless_, es necesario tener un entorno de visualización simulado, y esto lo proporciona `xvfb`.
-
-.Dockerfile
-[source, docker]
-----
-FROM jenkins/jenkins:lts
-
-USER root
-
-RUN apt-get update && \
-apt-get -y install apt-transport-https \
-    ca-certificates \
-    curl \
-    gnupg2 \
-    software-properties-common && \
-curl -fsSL https://download.docker.com/linux/$(. /etc/os-release; echo "$ID")/gpg > /tmp/dkey; apt-key add /tmp/dkey && \
-add-apt-repository \
-    "deb [arch=amd64] https://download.docker.com/linux/$(. /etc/os-release; echo "$ID") \
-    $(lsb_release -cs) \
-    stable" && \
-  apt-get update && \
-  apt-get -y install docker-ce
-
-RUN apt-get install -y docker-ce
-
-RUN usermod -a -G docker jenkins
-
-RUN apt-get -y install xvfb firefox-esr <1>
-
-USER jenkins
-----
-<1> Añadimos la instalación de xvfb y firefox
-
-Construimos la imagen a partir del Dockerfile:
-
-[source,bash,subs="verbatim,quotes"]
-----
-docker build --tag *ualjjcanada*/jenkins-docker:1.0 . <1>
-----
-<1> Sustituye *ualjjcanada/* por tu usuario de Dockerhub si estás registrado, si no simplemente no lo pongas.
-    
-Reinicia el contenedor para aplicar los cambios:
-
-[source,bash,subs="verbatim,quotes"]
-----
-docker restart jenkins-docker
-----
+[WARNING]
+Utilizamos la url `http://localhost:4444/wd/hub` para indicar que el driver está en el contenedor Docker que ejecutamos en Jenkins. Si tuvieramos el driver en otra máquina, deberíamos indicar la url de la máquina donde está el driver.
 
 === Creación del pipeline en Jenkins
 
-. Crea en Jenkins un nuevo proyecto pipeline. Incluye la fase (_stage_) con nombre `Firefox tests`, donde llames a maven. Utiliza `xvfb-run` que se encarga de iniciar y parar `xvfb` por ti.  
+. Crea en Jenkins un nuevo proyecto pipeline. Incluye la fase (_stage_) con nombre `Firefox tests`.
+. Lanza un contenedor Docker con la imagen `selenium/standalone-firefox` y ejecuta los tests de Selenium en modo _headless_. Para ello, utiliza el bloque `sh` de Jenkins, y ejecuta el siguiente comando: 
 
-    xvfb-run mvn test -Dwebdriver.gecko.driver=${JENKINS_HOME}/selenium-drivers/geckodriver 
+    docker run -d -p 4444:4444 -v /dev/shm:/dev/shm -v /var/run/docker.sock:/var/run/docker.sock selenium/standalone-firefox:4.8.1-20230306
+
+. Invoca a Maven para ejecutar los tests de Selenium. Para ello, utiliza el bloque `sh` de Jenkins, y ejecuta el siguiente comando:
+
+    mvn test
 
 El pipeline tendrá esta forma: 
 
@@ -134,7 +77,9 @@ pipeline {
             steps {
                 // Run Maven on xvfb environment display.
                 // Update the path/to/your/pom.xml as necessary
-                sh "xvfb-run mvn -f path/to/pom.xml clean test -Dwebdriver.gecko.driver=${DRIVERS_LOC}/geckodriver"
+                sh 'docker run -d -p 4444:4444 -v /dev/shm:/dev/shm -v /var/run/docker.sock:/var/run/docker.sock selenium/standalone-firefox:4.8.1-20230306'
+                sh 'mvn test' 
+
             }
             post {
                 // If Maven was able to run the tests, even if some of the test
@@ -153,14 +98,7 @@ pipeline {
 
 [WARNING]
 ====
-Comprueba que en el código de los tests Selenium en JUnit estás usando `FirefoxDriver`, y modo _headless_
-====
-
-[WARNING]
-====
-Recuerda que en el código debes comentar las lineas donde se definen las property con las rutas de los drivers.
-
-    // System.setProperty("webdriver.gecko.driver", "drivers/geckodriver.exe");
+Comprueba que en el código de los tests Selenium en JUnit estás usando `RemoteWebDriver`, y modo _headless_
 ====
 
 [start=3]
@@ -172,9 +110,7 @@ image::jenkins-webdriver-pipeline-firefox-ok.png[role="thumb", align="center"]
 === A partir de aquí es optativo
 
 [start=4]
-. Para probar la ejecución con Chrome, debes instalar Chrome en la máquina Jenkins. Para ello sigue los pasos: https://ubunlog.com/google-chrome-ubuntu-1804/#Instalar_Google_Chrome_en_Ubuntu_1804_LTS_desde_la_linea_de_comandos[Instalar Google Chrome en Ubuntu 18.04 LTS desde la línea de comandos] (No instales al versión beta, tampoco podrás ejecutarlo, simplemente instalarlo). Después, crea una nueva fase donde llames a los tests con el driver de Chrome. Tendrás que modificar el driver en el código, y llamar a maven con el siguiente parámetro para Chrome Driver: 
-
-     mvn test -Dwebdriver.chrome.driver=${DRIVERS_LOC}/chromedriver
+. Para probar la ejecución con Chrome, debes utilizar la imagen `selenium/standalone-chrome` en lugar de la imagen `selenium/standalone-firefox`.
 
 . Habrás implementado dos alternativas de ejecución en Jenkins de los test de Selenium en modo _headless_.
 Sin embargo, el diseño de clases JUnit y uso de los distintos drivers tiene varias desventajas: 
